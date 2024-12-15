@@ -35,4 +35,7 @@ private:
 private:
     std::vector<Enemy*> enemies;
     Vector2 mousePos;
+private:
+    int enemyType{0};
+    void changeType();
 };

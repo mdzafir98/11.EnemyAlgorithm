@@ -5,7 +5,7 @@ Enemy::Enemy()
     setTexture();
 }
 
-Enemy::Enemy(Vector2 position, int speed = 1, int laser_speed = 5, float fireRate = 0.35)
+Enemy::Enemy(Vector2 position, float speed = 1.f, int laser_speed = 5, float fireRate = 0.35)
     : m_position{position}, m_speed{speed}, m_laser_speed{laser_speed}, m_fireRate{fireRate}
 {
     setTexture();
@@ -26,10 +26,10 @@ void Enemy::update()
 {
     if (!clicked){
         fireLaser();
-        drawEnemyLaser();
-        updateLaser();
-        deleteLaser();
     }
+    drawEnemyLaser();
+    updateLaser();
+    deleteLaser();
     showStats();
 }
 
@@ -56,7 +56,7 @@ void Enemy::showStats()
 
 void Enemy::drawStats()
 {
-    DrawText(TextFormat("SPD: %i", m_speed),m_position.x, m_position.y-10, 8, {255,255,255,200});
+    DrawText(TextFormat("SPD: %.2f", m_speed),m_position.x, m_position.y-10, 8, {255,255,255,200});
     DrawText(TextFormat("FR: %.2f", m_fireRate),m_position.x, m_position.y-20, 8, {255,255,255,200});
 }
 

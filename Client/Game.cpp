@@ -8,7 +8,9 @@ Game::Game()
 
 Game::~Game()
 {
-    delete alien;
+    for (auto& enemy:enemies){
+        delete enemy;
+    }
 }
 
 void Game::draw()
@@ -17,8 +19,6 @@ void Game::draw()
     for (auto& enemy:enemies){
         enemy->draw();
     }
-    // alien->draw();
-    // prowler->draw();
     for (auto& laser:spaceship.lasers){
         laser.draw();
     }
@@ -56,6 +56,7 @@ void Game::handleInput()
         }
         handleFireLaser();
     }
+
     mousePos = {GetMousePosition()};
     for (auto& enemy:enemies){
         if (CheckCollisionPointRec(mousePos,enemy->getRect()) && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
@@ -66,20 +67,19 @@ void Game::handleInput()
             enemy->setPos({mousePos.x - enemy->m_image.width/2,mousePos.y - enemy->m_image.height/2});
         }
     }
-    // if (CheckCollisionPointRec(mousePos,alien->getRect()) && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
-    //     std::cout << "PAUSED ENEMY ENTITY!" << "\n";
-    //     alien->mouseClicked();
-    // }
-    // if (alien->clicked == true && IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-    //     alien->setPos({mousePos.x - alien->m_image.width/2,mousePos.y - alien->m_image.height/2});
-    // }
+
+    changeType();
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsKeyDown(KEY_H)){
+        Enemy* spawn = new Enemy({mousePos},1.f,5,0.5);
+        enemies.push_back(spawn);
+    }
 }
 
 void Game::handleFireLaser()
 {
     if (IsKeyDown(KEY_SPACE)){
             spaceship.fireLaser();
-            // std::cout << "firerate: " << spaceship.fireRate << "\n";
         }
     if (GetTime() - lastTime >= 0.5 && IsKeyDown(KEY_F)){
         if (fireRateToken>0){
@@ -90,7 +90,6 @@ void Game::handleFireLaser()
                 lastTime=GetTime();
             }
         } 
-        // std::cout << "firerate timer: " << fireRateTimer.getTimer(&fireRateTimer) << "\n";
     }
     fireRateTimer.updateTimer(&fireRateTimer);
     if (fireRateTimer.getTimer(&fireRateTimer)<0.f){
@@ -105,8 +104,11 @@ void Game::drawText()
 
 void Game::drawInterface()
 {
-    DrawText(TextFormat("Firerate: %.2f", spaceship.fireRate),10,20,20,{255,255,255,20});
-    DrawText(TextFormat("Token:  %i", fireRateToken),10,45,20,{255,255,255,20}); 
+    DrawText(TextFormat("Enemy: %i", enemies.size()),10,445,20,{255,255,255,50});
+    DrawText(TextFormat("Firerate: %.2f", spaceship.fireRate),10,465,20,{255,255,255,50});
+    DrawText(TextFormat("Token:  %i", fireRateToken),10,485,20,{255,255,255,50});
+
+    DrawText(TextFormat("Enemy type: %i", enemyType),350,485,20,{255,255,255,50}); 
 }
 
 void Game::initEnemies()
@@ -135,19 +137,7 @@ void Game::handleEnemies()
             }
         }
     }
-    // alien->update();
-    // if (alien->alive && alien->clicked == false){
-    //     if (spaceship.getPosition().x > alien->getPos().x){
-    //         alien->moveRight();
-    //     } else{
-    //         alien->moveLeft();
-    //     }
-    //     if (spaceship.getPosition().y-alien->getPos().y<200){
-    //         alien->moveUp();
-    //     } else{
-    //         alien->moveDown();
-    //     }
-    // }
+    prowler->checkArea(spaceship.getPosition());
 }
 
 void Game::checkCollisions()
@@ -168,5 +158,16 @@ void Game::deleteInactiveLaser()
         } else{
             ++it;
         }
+    }
+}
+
+void Game::changeType()
+{
+    if (IsKeyDown(KEY_ONE)){
+        enemyType = 1;
+    } else if (IsKeyDown(KEY_TWO)){
+        enemyType = 2;
+    } else if (IsKeyDown(KEY_ZERO)){
+        enemyType = 0;
     }
 }
