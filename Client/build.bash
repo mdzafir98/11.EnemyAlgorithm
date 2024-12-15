@@ -1,0 +1,1 @@
+g++ -o a.out main.cpp Game.cpp ../Shared/Spaceship.cpp ../Shared/Laser.cpp ../Shared/Timer.cpp ../Shared/Enemy.cpp ../Shared/Prowler.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
