@@ -26,13 +26,14 @@ public:
 public:
     Texture2D m_image;
     Vector2 m_position;
+    int m_type{0};
     float m_speed;
     int m_laser_speed;
     float m_fireRate;
     double lastFireTime;
     bool alive{true};
     bool clicked{false};
-    int health{5};
+    int m_health{5};
 public:
     std::vector<Laser> lasers;
     void drawEnemyLaser();

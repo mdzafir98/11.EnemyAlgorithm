@@ -71,8 +71,15 @@ void Game::handleInput()
     changeType();
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsKeyDown(KEY_H)){
-        Enemy* spawn = new Enemy({mousePos},1.f,5,0.5);
-        enemies.push_back(spawn);
+        if (enemyType == 0){
+            Enemy* spawn = new Enemy({mousePos},1.f,5,0.5);
+            enemies.push_back(spawn);
+        } else if (enemyType == 1){
+            Prowler* spawn = new Prowler({mousePos});
+            enemies.push_back(spawn);
+        } else{
+            std::cout << "enemy type not recognised!" << "\n";
+        }
     }
 }
 
@@ -137,15 +144,35 @@ void Game::handleEnemies()
             }
         }
     }
+
+    // TODO: unique enemy behaviour for entity
+    for (auto& enemy:enemies){
+        if (enemy->m_type == 1){
+
+        }
+    }
     prowler->checkArea(spaceship.getPosition());
+    checkEnemyHealth();
+}
+
+void Game::checkEnemyHealth()
+{
+    for (int i = 0; i < enemies.size(); i++){
+        if (enemies[i]->m_health <= 0){
+            delete enemies.at(i);
+            enemies.erase(enemies.begin() + i);
+        }
+    }
 }
 
 void Game::checkCollisions()
 {
-    for (auto& laser:spaceship.lasers){
-        if (CheckCollisionRecs(alien->getRect(),laser.getRect())){
-            alien->getDamaged(1);
-            laser.active=false;
+    for (auto& enemy:enemies){
+        for (auto& laser:spaceship.lasers){
+            if (CheckCollisionRecs(enemy->getRect(), laser.getRect())){
+                enemy->getDamaged(spaceship.laserDamage);
+                laser.active=false;
+            }
         }
     }
 }

@@ -4,8 +4,9 @@ Spaceship::Spaceship(){
     image=LoadTexture("../Resources/player.png");
     m_position.x=(GetScreenWidth()-image.width)/2;
     m_position.y=GetScreenHeight()-image.height;
-    lastFireTime=0;
-    m_speed=7;
+    lastFireTime = 0;
+    m_speed = 7;
+    laserDamage = 1;
 }
 
 Spaceship::~Spaceship(){

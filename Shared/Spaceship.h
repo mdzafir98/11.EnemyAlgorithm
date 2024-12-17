@@ -22,4 +22,5 @@ private:
 public:
     std::vector<Laser> lasers;
     float fireRate{0.35};
+    int laserDamage;
 };

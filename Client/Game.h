@@ -18,6 +18,7 @@ public:
     void drawInterface();
     void initEnemies();
     void handleEnemies();
+    void checkEnemyHealth();
     void checkCollisions();
 public:
     Spaceship spaceship;

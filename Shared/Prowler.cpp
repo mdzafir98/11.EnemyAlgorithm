@@ -7,6 +7,8 @@ Prowler::Prowler(Vector2 position)
     m_speed = 0.2;
     m_laser_speed = 2;
     m_fireRate = 0.5;
+    m_health = 7;
+    m_type = 1;
 }
 
 void Prowler::update()

@@ -9,12 +9,13 @@ Enemy::Enemy(Vector2 position, float speed = 1.f, int laser_speed = 5, float fir
     : m_position{position}, m_speed{speed}, m_laser_speed{laser_speed}, m_fireRate{fireRate}
 {
     setTexture();
-    std::cout << "created enemy entity!" << std::endl;
+    std::cout << "enemy entity created!" << "\n";
 }
 
 Enemy::~Enemy()
 {
     UnloadTexture(m_image);
+    std::cout << "enemy entity destroyed!" << "\n";
 }
 
 void Enemy::draw()
@@ -58,11 +59,16 @@ void Enemy::drawStats()
 {
     DrawText(TextFormat("SPD: %.2f", m_speed),m_position.x, m_position.y-10, 8, {255,255,255,200});
     DrawText(TextFormat("FR: %.2f", m_fireRate),m_position.x, m_position.y-20, 8, {255,255,255,200});
+    DrawText(TextFormat("HP: %i", m_health),m_position.x, m_position.y-30, 8, {255,255,255,200});
 }
 
 void Enemy::getDamaged(int damage)
 {
-    health -= damage;
+    if (m_health > 0){
+        m_health -= damage;
+    } else{
+        m_health = 0;
+    }
 }
 
 void Enemy::fireLaser()
@@ -70,7 +76,6 @@ void Enemy::fireLaser()
     double currentTime = GetTime();
     if (currentTime - lastFireTime >= m_fireRate){
         lasers.push_back(Laser({m_position.x+m_image.width/2-2, m_position.y},m_laser_speed));
-        // std::cout << "enemy laser vector size: " << lasers.size() << "\n";
         lastFireTime=GetTime();
     }
 }
