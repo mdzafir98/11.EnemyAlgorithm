@@ -1,7 +1,7 @@
 #include "Game.h"
 
 int main(){
-    InitWindow(512,512,"11_Enemy_Algorithm");
+    InitWindow(512,512,"11_EnemyAlgorithm");
     SetTargetFPS(60);
     Game game;
 

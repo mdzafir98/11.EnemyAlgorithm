@@ -11,6 +11,7 @@ Spaceship::Spaceship(){
 
 Spaceship::~Spaceship(){
     UnloadTexture(image);
+    std::cout << "spaceship entity destroyed!" << "\n";
 }
 
 void Spaceship::draw(){

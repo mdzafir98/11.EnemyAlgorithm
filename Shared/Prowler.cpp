@@ -9,6 +9,13 @@ Prowler::Prowler(Vector2 position)
     m_fireRate = 0.5;
     m_health = 7;
     m_type = 1;
+    std::cout << "PROWLER entity created!" << "\n";
+}
+
+Prowler::~Prowler()
+{
+    UnloadTexture(m_image);
+    std::cout << "PROWLER entity destroyed!" << "\n";
 }
 
 void Prowler::update()
@@ -21,6 +28,20 @@ void Prowler::update()
     deleteLaser();
     showStats();
     chasePlayer();
+}
+
+void Prowler::behave(Vector2 playerPos)
+{
+    //calls default enemy behave function
+    Enemy::behave(playerPos);
+
+    //unique prowler behave function
+    checkArea(playerPos);
+    if (nearPlayer){
+        m_speed = 1.5;
+    } else{
+        m_speed = 0.1;
+    }
 }
 
 void Prowler::setTexture()
@@ -43,6 +64,11 @@ float Prowler::pyDistance(Vector2 enemyPos, Vector2 playerPos)
     float result = (enemyPos.x - playerPos.x)*(enemyPos.x - playerPos.x) + 
         (enemyPos.y - playerPos.y)*(enemyPos.y - playerPos.y);
     return sqrt(result);
+}
+
+void Prowler::accept(Visitor *visitor)
+{
+    visitor->visit(this);
 }
 
 void Prowler::chasePlayer()

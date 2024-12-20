@@ -9,13 +9,13 @@ Enemy::Enemy(Vector2 position, float speed = 1.f, int laser_speed = 5, float fir
     : m_position{position}, m_speed{speed}, m_laser_speed{laser_speed}, m_fireRate{fireRate}
 {
     setTexture();
-    std::cout << "enemy entity created!" << "\n";
+    std::cout << "ENEMY entity created!" << "\n";
 }
 
 Enemy::~Enemy()
 {
     UnloadTexture(m_image);
-    std::cout << "enemy entity destroyed!" << "\n";
+    std::cout << "ENEMY entity destroyed!" << "\n";
 }
 
 void Enemy::draw()
@@ -109,6 +109,22 @@ void Enemy::moveUp()
     }
 }
 
+void Enemy::behave(Vector2 playerPos)
+{
+    if (alive && clicked == false){
+        if (playerPos.x > m_position.x){
+            moveRight();
+        } else{
+            moveLeft();
+        }
+        if (playerPos.y - m_position.y < 200){
+            moveUp();
+        } else{
+            moveDown();
+        }
+    }
+}
+
 Vector2 Enemy::getPos()
 {
     return m_position;
@@ -123,6 +139,11 @@ Rectangle Enemy::getRect()
 {
     return {m_position.x, m_position.y, 
         float(m_image.width), float(m_image.height)};
+}
+
+void Enemy::accept(Visitor *visitor)
+{
+    visitor->visit(this);
 }
 
 void Enemy::drawEnemyLaser()

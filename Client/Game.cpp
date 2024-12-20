@@ -78,7 +78,7 @@ void Game::handleInput()
             Prowler* spawn = new Prowler({mousePos});
             enemies.push_back(spawn);
         } else{
-            std::cout << "enemy type not recognised!" << "\n";
+            std::cout << "ENEMY type not recognised!" << "\n";
         }
     }
 }
@@ -111,47 +111,30 @@ void Game::drawText()
 
 void Game::drawInterface()
 {
-    DrawText(TextFormat("Enemy: %i", enemies.size()),10,445,20,{255,255,255,50});
-    DrawText(TextFormat("Firerate: %.2f", spaceship.fireRate),10,465,20,{255,255,255,50});
-    DrawText(TextFormat("Token:  %i", fireRateToken),10,485,20,{255,255,255,50});
+    DrawText(TextFormat("ENEMY: %i", enemies.size()),10,445,20,{255,255,255,50});
+    DrawText(TextFormat("FIRERATE: %.2f", spaceship.fireRate),10,465,20,{255,255,255,50});
+    DrawText(TextFormat("TOKEN: %i", fireRateToken),10,485,20,{255,255,255,50});
 
-    DrawText(TextFormat("Enemy type: %i", enemyType),350,485,20,{255,255,255,50}); 
+    DrawText(TextFormat("ENEMY_TYPE: %i", enemyType),320,485,20,{255,255,255,50}); 
 }
 
 void Game::initEnemies()
 {
     alien = new Enemy({100,100},1,5,0.5);
     prowler = new Prowler({200,200});
+    mothership = new Mothership({200,200});
+    
     enemies.push_back(alien);
     enemies.push_back(prowler);
+    enemies.push_back(mothership);
 }
 
 void Game::handleEnemies()
 {
     for (auto& enemy:enemies){
         enemy->update();
-        if (enemy->alive && enemy->clicked == false){
-            if (spaceship.getPosition().x > enemy->getPos().x){
-                enemy->moveRight();
-            } else{
-                enemy->moveLeft();
-            }
-        
-            if (spaceship.getPosition().y - enemy->getPos().y < 200){
-                enemy->moveUp();
-            } else{
-                enemy->moveDown();
-            }
-        }
+        enemy->behave(spaceship.getPosition());
     }
-
-    // TODO: unique enemy behaviour for entity
-    for (auto& enemy:enemies){
-        if (enemy->m_type == 1){
-
-        }
-    }
-    prowler->checkArea(spaceship.getPosition());
     checkEnemyHealth();
 }
 

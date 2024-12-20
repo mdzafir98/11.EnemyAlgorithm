@@ -5,11 +5,15 @@
 class Prowler : public Enemy{
 public:
     Prowler(Vector2 position);
-    virtual void update() override;
+    ~Prowler() override;
+    void update() override;
+    void behave(Vector2 playerPos) override;
     void setTexture();
-    bool checkArea(Vector2 playerPos);
     float pyDistance(Vector2 enemyPos, Vector2 playerPos);
-    void chasePlayer();
+    void accept(Visitor* visitor) override;
 public:
     bool nearPlayer{false};
+private:
+    void chasePlayer();
+    bool checkArea(Vector2 playerPos);
 };

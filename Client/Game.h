@@ -3,6 +3,7 @@
 #include "../Shared/Timer.h"
 #include "../Shared/Enemy.h"
 #include "../Shared/Prowler.h"
+#include "../Shared/Mothership.h"
 #include <math.h>
 
 class Game{
@@ -20,12 +21,14 @@ public:
     void handleEnemies();
     void checkEnemyHealth();
     void checkCollisions();
+    void changeType();
+    void deleteInactiveLaser();
 public:
     Spaceship spaceship;
     Enemy* alien;
     Prowler* prowler;
+    Mothership* mothership;
 private:
-    void deleteInactiveLaser();
     bool alive;
     Vector2 laserVector;
 private:
@@ -33,10 +36,7 @@ private:
     int fireRateToken{3};
     Timer fireRateTimer{0};
     float firerateLife{2.0f};
-private:
     std::vector<Enemy*> enemies;
     Vector2 mousePos;
-private:
     int enemyType{0};
-    void changeType();
 };
