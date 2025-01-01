@@ -32,26 +32,28 @@ void Mothership::setTexture()
 
 void Mothership::behave(Vector2 playerPos)
 {
-    if (wallFlag==false){
-        moveRight();
-        if (m_position.x + m_image.width >= GetScreenWidth()){
-            wallFlag = true;
+    if (alive && clicked == false){
+        if (wallFlag==false){
+            moveRight();
+            if (m_position.x + m_image.width >= GetScreenWidth()){
+                wallFlag = true;
+            }
+        } else if (wallFlag==true){
+            moveLeft();
+            if (m_position.x <= 0){
+                wallFlag = false;
+            }
         }
-    } else if (wallFlag==true){
-        moveLeft();
-        if (m_position.x <= 0){
-            wallFlag = false;
+
+        if (playerPos.y - m_position.y < 400){
+            moveUp();
+        } else{
+            moveDown();
         }
-    }
 
-    if (playerPos.y - m_position.y < 400){
-        moveUp();
-    } else{
-        moveDown();
-    }
-
-    if (checkArea(playerPos) && spawnCount > 0){
-        spawnEnemy();
+        if (checkArea(playerPos) && spawnCount > 0){
+            spawnEnemy();
+        }
     }
 }
 

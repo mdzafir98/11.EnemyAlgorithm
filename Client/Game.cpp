@@ -44,6 +44,7 @@ void Game::initGame()
 
 void Game::handleInput()
 {
+    // spaceship controls
     if (alive){
         if (IsKeyDown(KEY_W)){
             spaceship.moveUp();
@@ -54,9 +55,14 @@ void Game::handleInput()
         } else if (IsKeyDown(KEY_S)){
             spaceship.moveDown();
         }
+
+        if (IsKeyDown(KEY_G)){
+            spaceship.drawStats();
+        }
         handleFireLaser();
     }
 
+    // enemy entity controls
     mousePos = {GetMousePosition()};
     for (auto& enemy:enemies){
         if (CheckCollisionPointRec(mousePos,enemy->getRect()) && IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
@@ -155,6 +161,13 @@ void Game::checkCollisions()
             if (CheckCollisionRecs(enemy->getRect(), laser.getRect())){
                 enemy->getDamaged(spaceship.laserDamage);
                 laser.active=false;
+            }
+        }
+
+        for (auto& laser:enemy->lasers){
+            if (CheckCollisionRecs(spaceship.getRect(), laser.getRect())){
+                spaceship.getDamaged(enemy->laserDamage);
+                laser.active = false;
             }
         }
     }

@@ -40,4 +40,5 @@ public: //variables
     bool clicked{false};
     int m_health{5};
     std::vector<Laser> lasers;
+    int laserDamage{1};
 };

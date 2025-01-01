@@ -149,6 +149,7 @@ void Enemy::accept(Visitor *visitor)
 void Enemy::drawEnemyLaser()
 {
     for (auto& laser:lasers){
+        laser.setColor(RED);
         laser.draw();
     }
 }
